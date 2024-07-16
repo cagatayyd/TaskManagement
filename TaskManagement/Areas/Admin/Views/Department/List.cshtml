@@ -1,0 +1,155 @@
+﻿<link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@{
+    ViewData["Title"] = "Index";
+}
+@using TaskManagement.Areas.Admin.Models
+@model List<DepartmentModel>
+
+<div class="row mb-3">
+    <div class="col-md-10 d-flex align-items-center">
+        <h1>Departmanlar</h1>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-md btn-primary" data-bs-toggle="modal" data-bs-target="#addRoleModal">
+            Departman Ekle
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRoleModalLabel">Yeni Departman Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addDepartmentForm">
+                    <div class="mb-3">
+                        <label for="departmentName" class="form-label">Departman Adı</label>
+                        <input type="text" class="form-control" id="departmentName" name="Name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div id="liveAlertPlaceholder"></div>
+        <table id="dataTable" class="table mt-4">
+            <thead>
+                <tr>
+                    <th class="col-1">Id</th>
+                    <th class="col-6">Departman Adı</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr data-id="@item.Id">
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>
+                            <button class="btn btn-danger ms-3 delete" data-id="@item.Id">Sil</button>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+<script>new DataTable('#dataTable');</script>
+
+<script>
+    $(document).ready(function () {
+        // Bootstrap Live Alert function
+        function showAlert(message, type) {
+            const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+            const wrapper = document.createElement('div');
+            wrapper.innerHTML = [
+                `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                `   <div>${message}</div>`,
+                '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                '</div>'
+            ].join('');
+            alertPlaceholder.append(wrapper);
+        }
+
+        // Add Department Form Submission
+        $('#addDepartmentForm').on('submit', function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '@Url.Action("Create", "Departments", new { area = "admin" })',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    if (response.success) {
+                        $('#addRoleModal').modal('hide');
+                        var newRow = `<tr data-id="${response.department.Id}">
+                                                <td>${response.department.Id}</td>
+                                                <td>${response.department.Name}</td>
+                                                <td>
+                                                    <button class="btn btn-danger ms-3 delete" data-id="${response.department.Id}">Sil</button>
+                                                </td>
+                                              </tr>`;
+                        $('#dataTable tbody').append(newRow);
+                        showAlert("Departman başarıyla eklendi.", "success");
+                    } else {
+                        showAlert("Departman eklenemedi: " + response.message, "danger");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    showAlert("Bir hata oluştu: " + error, "danger");
+                }
+            });
+        });
+
+        // Edit Department Modal Handling
+        $(document).on('click', '.edit', function () {
+            var id = $(this).data('id');
+            $.get('@Url.Action("Edit", "Departments", new { area = "admin" })', { id: id })
+                .done(function (response) {
+                    $('#editModal').html(response);
+                    $('#editModal').modal('show');
+                })
+                .fail(function () {
+                    console.error("Edit modal açılırken bir hata oluştu.");
+                });
+        });
+
+        // Delete Department Handling
+        $(document).on('click', '.delete', function () {
+            var id = $(this).data('id');
+
+            if (confirm('Bu kaydı silmek istediğinizden emin misiniz?')) {
+                $.ajax({
+                    url: '@Url.Action("Delete", "Departments", new { area = "admin" })',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function (response) {
+                        if (response.success) {
+                            $('#dataTable tbody').find('tr[data-id="' + id + '"]').remove();
+                            showAlert("Kayıt başarıyla silindi.", "success");
+                        } else {
+                            showAlert("Silme işlemi gerçekleştirilemedi: " + response.message, "danger");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        showAlert("Bir hata oluştu: " + error, "danger");
+                    }
+                });
+            }
+        });
+    });
+</script>

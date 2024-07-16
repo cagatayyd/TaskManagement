@@ -1,0 +1,94 @@
+﻿@using System.Security.Claims
+@using TaskManagement.Areas.Admin.Models
+@model List<TaskModel>
+
+<link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" rel="stylesheet" />
+
+<h1 class="mb-4">Görev Listesi</h1>
+
+<table id="dataTable" class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Görev Adı</th>
+            <th>Başlangıç Tarihi</th>
+            <th>Bitiş Tarihi</th>
+            <th>Detaylar</th>
+            <th>Yönetici Onayı</th>
+            <th>Başlama Durumu</th>
+            <th>İlerleme(%)</th>
+            <th>Onay</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td><a asp-action="TaskDetails" asp-controller="TaskManagement" asp-route-id="@item.Id">@item.Name</a></td>
+                <td>@item.StartDate</td>
+                <td>@item.EndDate</td>
+                <td>@item.Detail</td>
+                <td class="col-1 isapproved @(item.IsApproved ? "text-success" : "text-danger")">
+                    @(item.IsApproved ? "Evet" : "Hayır")
+                </td>
+                <td class="col-1 @(item.IsInProgress ? "text-success" : "text-danger")">
+                    @(item.IsInProgress ? "Evet" : "Hayır")
+                </td>
+                <td class="col-1">@item.CompletionProgress %</td>
+                <td>
+                    @if (!item.IsApproved)
+                    {
+                        if ((User.HasClaim(x => x.Type == ClaimTypes.Role && x.Value == "Admin")))
+                        {
+                            <button type="button" class="btn btn-sm btn-success btn-approve" data-task-id="@item.Id">İşi Onayla</button>
+                        }
+                        else
+                        {
+                            <span class="text-warning">Onaylanmadı</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-success">Onaylandı</span>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+
+            $('.btn-approve').click(function () {
+                var taskId = $(this).data('task-id');
+                var button = $(this); // Store reference to the clicked button
+                var row = button.closest('tr'); // Find the closest row to the clicked button
+                var isApprovedCell = row.find('.isapproved'); // Find the isApproved cell in the same row
+
+                $.ajax({
+                    url: 'ApproveTask/' + taskId,
+                    method: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            // Change the button text to "Onaylandı" and disable the button
+                            button.replaceWith('<span class="text-success">Onaylandı</span>');
+                            // Change the isApproved cell text and class to "Evet" and "text-success"
+                            isApprovedCell.text('Evet').removeClass('text-danger').addClass('text-success');
+                        } else {
+                            console.error('Approval failed:', response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error approving task:', error);
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+}

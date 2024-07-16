@@ -1,0 +1,17 @@
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.csproj.AssemblyReference.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.AssemblyInfoInputs.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.AssemblyInfo.cs
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.csproj.CoreCompileInputs.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\bin\Debug\net8.0\TaskManagement.Data.deps.json
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\bin\Debug\net8.0\TaskManagement.Data.runtimeconfig.json
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\bin\Debug\net8.0\TaskManagement.Data.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\bin\Debug\net8.0\TaskManagement.Data.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\bin\Debug\net8.0\TaskManagement.Core.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\bin\Debug\net8.0\TaskManagement.Core.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskMana.634D6A5D.Up2Date
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\refint\TaskManagement.Data.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\TaskManagement.Data.genruntimeconfig.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Data\obj\Debug\net8.0\ref\TaskManagement.Data.dll

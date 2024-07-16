@@ -1,0 +1,88 @@
+﻿@using TaskManagement.Areas.Admin.Models
+@model CorporateTaskModel
+
+@{
+    ViewData["Title"] = "Task Details";
+}
+
+<h1>Task Details</h1>
+
+<div>
+    <h4>Task Information</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Name
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.StartDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.StartDate
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EndDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.EndDate
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Detail)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Detail
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsApproved)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.IsApproved)
+            {
+                <span class="text-success">Onaylandı</span>
+            }
+            else
+            {
+                <span class="text-danger">Onaylanmadı</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsInProgress)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.IsInProgress)
+            {
+                <span class="text-success">Evet</span>
+            }
+            else
+            {
+                <span class="text-danger">Hayır</span>
+            }
+        </dd>
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.CompletionProgress)
+        </dt>
+        <dd class="col-sm-10">
+            @Model.CompletionProgress
+        </dd>
+
+        <dt class="col-sm-2">
+            Çalışanlar
+        </dt>
+        <dd class="col-sm-10">
+            @string.Join(", ", Model.EmployeeNames.Zip(Model.EmployeeSurnames, (name, surname) => name + " " + surname))
+        </dd>
+    </dl>
+</div>
+
+<div>
+    <a asp-action="List">Back to List</a>
+</div>

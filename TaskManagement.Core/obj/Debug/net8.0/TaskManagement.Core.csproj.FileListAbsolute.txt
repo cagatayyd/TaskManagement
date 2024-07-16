@@ -1,0 +1,12 @@
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\bin\Debug\net8.0\TaskManagement.Core.deps.json
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\bin\Debug\net8.0\TaskManagement.Core.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\bin\Debug\net8.0\TaskManagement.Core.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\TaskManagement.Core.csproj.AssemblyReference.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\TaskManagement.Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\TaskManagement.Core.AssemblyInfoInputs.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\TaskManagement.Core.AssemblyInfo.cs
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\TaskManagement.Core.csproj.CoreCompileInputs.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\TaskManagement.Core.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\refint\TaskManagement.Core.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\TaskManagement.Core.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Core\obj\Debug\net8.0\ref\TaskManagement.Core.dll

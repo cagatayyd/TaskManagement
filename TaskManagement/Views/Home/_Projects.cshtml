@@ -1,0 +1,135 @@
+﻿@using TaskManagement.Models
+@model CorporateTaskModel
+<!--begin::Col-->
+<div class="col-xl-12">
+	<!--begin::Table widget 14-->
+	<div class="card card-flush h-md-100">
+		<!--begin::Header-->
+		<div class="card-header pt-7">
+			<!--begin::Title-->
+			<h3 class="card-title align-items-start flex-column">
+				<span class="card-label fw-bold text-gray-800">Projelerim</span>
+
+			</h3>
+			<!--end::Title-->
+		</div>
+		<!--end::Header-->
+		<!--begin::Body-->
+		<div class="card-body pt-6">
+			<!--begin::Table container-->
+			<div class="table-responsive">
+				<!--begin::Table-->
+				<table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+					<!--begin::Table head-->
+					<thead>
+						<tr class="fs-7 fw-bold text-gray-400 border-bottom-0">
+							<th class="p-0 pb-3 min-w-175px text-start">Görev Adı</th>
+							<th class="p-0 pb-3 min-w-100px text-center">Onay Durumu</th>
+							<th class="p-0 pb-3 w-75px text-center">Başlama Durumu</th>
+							<th class="p-0 pb-3 min-w-100px text-center">İlerleme (%)</th>
+							<th class="p-0 pb-3 min-w-175px text-center pe-5">Başlangıç Tarihi</th>
+							<th class="p-0 pb-3 w-175px text-center pe-5">Bitiş Tarihi</th>
+							<th class="p-0 pb-3 w-50px text-end">Detaylar</th>
+						</tr>
+					</thead>
+					<!--end::Table head-->
+					<!--begin::Table body-->
+					<tbody>
+					@foreach (var task in Model.Tasks.Where(c=>c.IsFinish==false))
+					{
+							<tr>
+								<td>
+									<div class="d-flex align-items-center">
+										<div class="symbol symbol-50px me-3">
+											<img src="/assets/media/stock/600x600/img-49.jpg" class="" alt="" />
+										</div>
+										<div class="d-flex justify-content-start flex-column">
+											<a href="#" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">@task.Name</a>
+											<span class="text-gray-400 fw-semibold d-block fs-7">@ViewBag.NameSurname</span>
+										</div>
+									</div>
+								</td>
+								<td class="text-center pe-5 isapproved">
+									@if (task.IsApproved == false)
+									{
+										<span class="badge py-3 px-4 fs-7 badge-light-danger">Onaylanmadı</span>
+									}
+									else
+									{
+										<span class="badge py-3 px-4 fs-7 badge-light-success">Onaylandı</span>
+									}
+								</td>
+								<td class="text-center pe-5">
+									@if (!task.IsInProgress)
+									{
+										@if (task.IsApproved == true)
+										{
+											<span type="button" class="badge-light-primary badge py-3 px-4 fs-7 btn-approve" data-task-id="@task.Id">İşe Başla</span>
+										}
+										else
+										{
+											<span class="badge py-3 px-4 fs-7 badge-light-danger">Başlanamaz</span>
+
+										}
+									}
+									else
+									{
+										<span class="badge py-3 px-4 fs-7 badge-light-success">Başlandı</span>
+									}
+								</td>
+								<td class="text-center pe-0">
+									@if (task.CompletionProgress >= 50)
+									{
+										<span class="badge badge-light-success fs-base editable-cell" data-id="@task.Id" data-field="CompletionProgress" id="completionProgress-@task.Id">
+											<i class="ki-duotone ki-arrow-up fs-5 text-success ms-n1">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i><span class="completion-progress-text">@task.CompletionProgress %</span>
+										</span>
+										<input type="text" class="form-control d-none editable-input" data-id="@task.Id" data-field="CompletionProgress" value="@task.CompletionProgress" />
+									}
+									@if (task.CompletionProgress >= 25 && task.CompletionProgress < 50)
+									{
+										<span class="badge badge-light-primary fs-base editable-cell" data-id="@task.Id" data-field="CompletionProgress" id="completionProgress-@task.Id">
+											<i class="ki-duotone ki-arrow-up fs-5 text-primary ms-n1">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i><span class="completion-progress-text">@task.CompletionProgress %</span>
+										</span>
+										<input type="text" class="form-control d-none editable-input" data-id="@task.Id" data-field="CompletionProgress" value="@task.CompletionProgress" />
+									}
+									@if (task.CompletionProgress < 25)
+									{
+										<span class="badge badge-light-danger fs-base editable-cell" data-id="@task.Id" data-field="CompletionProgress" id="completionProgress-@task.Id">
+											<i class="ki-duotone ki-arrow-down fs-5 text-danger ms-n1">
+												<span class="path1"></span>
+												<span class="path2"></span>
+											</i><span class="completion-progress-text">@task.CompletionProgress %</span>
+										</span>
+										<input type="text" class="form-control d-none editable-input" data-id="@task.Id" data-field="CompletionProgress" value="@task.CompletionProgress" />
+									}
+								</td>
+								<td class="text-center pe-5">
+									<span class="text-gray-600 fw-bold fs-6">@task.StartDate</span>
+								</td>
+								<td class="text-center pe-5">
+									<span class="text-gray-600 fw-bold fs-6">@task.EndDate</span>
+								</td>
+								<td class="text-end">
+									<a href="#" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+										<i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+									</a>
+								</td>
+							</tr>
+						}
+					</tbody>
+					<!--end::Table body-->
+				</table>
+			</div>
+			<!--end::Table-->
+		</div>
+		<!--end: Card Body-->
+	</div>
+	<!--end::Table widget 14-->
+</div>
+<!--begin::Col-->

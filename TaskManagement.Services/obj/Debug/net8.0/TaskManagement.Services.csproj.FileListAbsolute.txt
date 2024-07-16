@@ -1,0 +1,17 @@
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskManagement.Services.csproj.AssemblyReference.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskManagement.Services.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskManagement.Services.AssemblyInfoInputs.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskManagement.Services.AssemblyInfo.cs
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskManagement.Services.csproj.CoreCompileInputs.cache
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\bin\Debug\net8.0\TaskManagement.Services.deps.json
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\bin\Debug\net8.0\TaskManagement.Services.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\bin\Debug\net8.0\TaskManagement.Services.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\bin\Debug\net8.0\TaskManagement.Core.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\bin\Debug\net8.0\TaskManagement.Data.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\bin\Debug\net8.0\TaskManagement.Core.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\bin\Debug\net8.0\TaskManagement.Data.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskMana.0D40AF25.Up2Date
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskManagement.Services.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\refint\TaskManagement.Services.dll
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\TaskManagement.Services.pdb
+C:\Users\Cqty_\OneDrive\Masaüstü\TaskManagement\TaskManagement.Services\obj\Debug\net8.0\ref\TaskManagement.Services.dll

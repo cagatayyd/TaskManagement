@@ -1,0 +1,63 @@
+﻿@using TaskManagement.Areas.Admin.Models;
+@model CorporateTaskModel
+
+@{
+    ViewData["Title"] = "Create Task";
+    var employees = ViewData["Employees"] as List<SelectListItem>;
+    if (employees == null)
+    {
+        // ViewData["Employees"] null ise veya beklenen türde değilse buraya girebilir
+        // Hata işlemleri veya düzeltmeler yapılabilir
+    }
+}
+<div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-8">
+            <h3>Görev Kayıt</h3>
+        </div>
+        <div class="col-4 text-end">
+            <a asp-action="TaskList" asp-controller="TaskManagement" class="btn btn-outline-dark">Back To List</a>
+        </div>
+    </div>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label asp-for="StartDate" class="control-label"></label>
+                <input asp-for="StartDate" class="form-control" />
+                <span asp-validation-for="StartDate" class="text-danger"></span>
+            </div>
+            <div class="form-group col-md-4">
+                <label asp-for="EndDate" class="control-label"></label>
+                <input asp-for="EndDate" class="form-control" />
+                <span asp-validation-for="EndDate" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Detail" class="control-label"></label>
+            <textarea asp-for="Detail" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Detail" class="text-danger"></span>
+        </div>
+        <div class="form-group mt-3">
+            <label>Görevin atanacağı çalışan :</label>
+            <div class="checkbox-list">
+                @foreach (var employee in ViewBag.Employees)
+                {
+                    <div class="form-check">
+                        <input type="checkbox" class="form-check-input" name="EmployeeTasks" value="@employee.Value" id="employee_@employee.Value">
+                        <label class="form-check-label" for="employee_@employee.Value">@employee.Text</label>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

@@ -1,0 +1,85 @@
+﻿@model TaskManagement.Areas.Admin.Models.AdminModel
+@{
+var taskEmployeeMappings = ViewBag.TaskEmployeeMappings as Dictionary<int, List<string>>;
+}
+<!--begin::Table Widget 5-->
+<div class="card card-flush h-xl-100">
+	<!--begin::Card header-->
+	<div class="card-header pt-7">
+		<!--begin::Title-->
+		<h3 class="card-title align-items-start flex-column">
+			<span class="card-label fw-bold text-dark">Bitirilen Görev Listesi</span>
+			<span class="text-gray-400 mt-1 fw-semibold fs-6">Bitirilen görev sayısı @ViewBag.FinishedTaskCount</span>
+		</h3>
+		<!--end::Title-->
+	</div>
+	<!--end::Card header-->
+	<div class="card-body pt-6">
+		<!--begin::Table container-->
+		<div class="table-responsive">
+			<!--begin::Table-->
+			<table class="table table-row-dashed align-middle gs-0 gy-3 my-0">
+				<!--begin::Table head-->
+				<thead>
+				<tr class="fs-7 fw-bold text-gray-400 border-bottom-0">
+					<th class="p-0 pb-3 min-w-175px text-start">Görev Adı</th>
+					<th class="p-0 pb-3 min-w-100px text-center">Proje Durumu</th>
+					<th class="p-0 pb-3 min-w-175px text-center pe-5">Başlangıç Tarihi</th>
+					<th class="p-0 pb-3 w-175px text-center pe-5">Bitiş Tarihi</th>
+					<th class="p-0 pb-3 w-50px text-end">Detaylar</th>
+				</tr>
+				</thead>
+				<!--end::Table head-->
+				<!--begin::Table body-->
+				<tbody>
+				@foreach (var task in Model.CorporateTasks.Where(t => t.IsFinish == true))
+				{
+				<tr>
+					<td>
+						<div class="d-flex align-items-center">
+							<div class="symbol symbol-50px me-3">
+								<img src="/assets/media/stock/600x600/img-49.jpg" class="" alt=""/>
+							</div>
+							<div class="d-flex justify-content-start flex-column">
+								<a href="#" class="text-gray-800 fw-bold text-hover-primary mb-1 fs-6">@task.Name</a>
+								@if (taskEmployeeMappings != null && taskEmployeeMappings.ContainsKey(task.Id))
+								{
+								foreach (var employee in taskEmployeeMappings[task.Id])
+								{
+								<span class="text-gray-400 fw-semibold d-block fs-7">@employee</span>
+								}
+								}
+							</div>
+						</div>
+					</td>
+					<td class="text-center pe-5">
+						@if (task.IsFinish ==true)
+						{
+						<span class="badge py-3 px-4 fs-7 badge-light-success">Bitirildi</span>
+						}
+						else
+						{
+							<span class="badge py-3 px-4 fs-7 badge-light-danger">Bitirildi</span>
+						}
+					</td>
+					<td class="text-center pe-5">
+						<span class="text-gray-600 fw-bold fs-6">@task.StartDate</span>
+					</td>
+					<td class="text-center pe-5">
+						<span class="text-gray-600 fw-bold fs-6">@task.EndDate</span>
+					</td>
+					<td class="text-end">
+						<a asp-action="Details" asp-controller="CorporateTask" asp-route-id="@task.Id" class="btn btn-sm btn-icon btn-bg-light btn-active-color-primary w-30px h-30px">
+							<i class="ki-duotone ki-black-right fs-2 text-gray-500"></i>
+						</a>
+					</td>
+				</tr>
+				}
+				</tbody>
+				<!--end::Table body-->
+			</table>
+		</div>
+		<!--end::Table-->
+	</div>
+</div>
+<!--end::Table Widget 5-->

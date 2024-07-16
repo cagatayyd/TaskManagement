@@ -1,0 +1,158 @@
+﻿@using System.Security.Claims
+@using TaskManagement.Areas.Admin.Models
+@model List<CorporateTaskModel>
+
+<link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" rel="stylesheet" />
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/css/bootstrap.min.css" rel="stylesheet" />
+
+<h1 class="mb-4">Görev Listesi</h1>
+<div class="position-sticky" id="liveAlertPlaceholder"></div>
+
+<table id="dataTable" class="table table-striped mt-4">
+    <thead>
+        <tr>
+            <th>Görev Adı</th>
+            <th>Başlangıç Tarihi</th>
+            <th>Bitiş Tarihi</th>
+            <th>Detaylar</th>
+            <th>Yönetici Onayı</th>
+            <th>Başlama Durumu</th>
+            <th>İlerleme(%)</th>
+            @if ((User.HasClaim(x => x.Type == ClaimTypes.Role && x.Value == "Admin")))
+            {
+                <th>Onay</th>
+                <th>Sil</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-controller="CorporateTask" asp-route-id="@item.Id"
+                       data-bs-toggle="tooltip" data-bs-placement="top"
+                       title="@((item.EmployeeNames != null && item.EmployeeNames.Any()) ? string.Join(", ", item.EmployeeNames) : "No employees assigned")">
+                        @item.Name
+                    </a>
+                </td>
+                <td>@item.StartDate</td>
+                <td>@item.EndDate</td>
+                <td>@item.Detail</td>
+                <td class="col-1 isapproved @(item.IsApproved ? "text-success" : "text-danger")">
+                    @(item.IsApproved ? "Evet" : "Hayır")
+                </td>
+                <td class="col-1 @(item.IsInProgress ? "text-success" : "text-danger")">
+                    @(item.IsInProgress ? "Evet" : "Hayır")
+                </td>
+                <td class="col-1">@item.CompletionProgress %</td>
+                <td>
+                    @if (!item.IsApproved)
+                    {
+                        if ((User.HasClaim(x => x.Type == ClaimTypes.Role && x.Value == "Admin")))
+                        {
+                            <button type="button" class="btn btn-sm btn-success btn-approve" data-task-id="@item.Id">İşi Onayla</button>
+                        }
+                        else
+                        {
+                            <span class="text-warning">Onaylanmadı</span>
+                        }
+                    }
+                    else
+                    {
+                        <span class="text-success">Onaylandı</span>
+                    }
+                </td>
+                @if ((User.HasClaim(x => x.Type == ClaimTypes.Role && x.Value == "Admin")))
+                {
+                    <td><a class="btn btn-danger delete" data-id="@item.Id">Sil</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#dataTable').DataTable();
+
+            function showAlert(message, type) {
+                const alertPlaceholder = document.getElementById('liveAlertPlaceholder');
+                const wrapper = document.createElement('div');
+                wrapper.innerHTML = [
+                    `<div class="alert alert-${type} alert-dismissible" role="alert">`,
+                    `   <div>${message}</div>`,
+                    '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
+                    '</div>'
+                ].join('');
+                alertPlaceholder.append(wrapper);
+            }
+
+            $('.btn-approve').click(function () {
+                var taskId = $(this).data('task-id');
+                var button = $(this); // Store reference to the clicked button
+                var row = button.closest('tr'); // Find the closest row to the clicked button
+                var isApprovedCell = row.find('.isapproved'); // Find the isApproved cell in the same row
+
+                $.ajax({
+                    url: 'ApproveTask/' + taskId,
+                    method: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            // Change the button text to "Onaylandı" and disable the button
+                            button.replaceWith('<span class="text-success">Onaylandı</span>');
+                            // Change the isApproved cell text and class to "Evet" and "text-success"
+                            isApprovedCell.text('Evet').removeClass('text-danger').addClass('text-success');
+                            showAlert("Görev başarıyla onaylandı.", "success");
+                        } else {
+                            console.error('Approval failed:', response.message);
+                            showAlert("Görev onaylanamadı: " + response.message, "danger");
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error approving task:', error);
+                        console.error(xhr.responseText);
+                        showAlert("Bir hata oluştu: " + error, "danger");
+                    }
+                });
+            });
+
+            $(document).on('click', '.delete', function () {
+                var id = $(this).data('id');
+                var row = $(this).closest('tr'); // Find the closest row to the clicked delete button
+
+                if (confirm('Bu kaydı silmek istediğinizden emin misiniz?')) {
+                    $.ajax({
+                        url: '@Url.Action("Delete", "CorporateTask", new { area = "admin" })',
+                        type: 'POST',
+                        data: { id: id },
+                        success: function (response) {
+                            if (response.success) {
+                                row.fadeOut(500, function () {
+                                    $(this).remove(); // Remove the row from the table after fade out
+                                });
+                                showAlert("Kayıt başarıyla silindi.", "success");
+                            } else {
+                                showAlert("Silme işlemi gerçekleştirilemedi: " + response.message, "danger");
+                            }
+                        },
+                        error: function (xhr, status, error) {
+                            showAlert("Bir hata oluştu: " + error, "danger");
+                        }
+                    });
+                }
+            });
+
+            // Initialize Bootstrap tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+            var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+                return new bootstrap.Tooltip(tooltipTriggerEl)
+            })
+        });
+    </script>
+}

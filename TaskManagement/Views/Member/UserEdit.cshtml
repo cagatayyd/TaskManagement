@@ -1,0 +1,44 @@
+﻿@model UserEditViewModel
+@{
+    ViewData["Title"] = "ResetPassword";
+}
+
+<div class="row">
+    <div class="col-md-6 offset-md-3">
+
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-info" role="alert">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+
+        <div asp-validation-summary=ModelOnly class="alert alert-danger" role="alert">
+        </div>
+
+        <form asp-controller="Member" asp-action="UserEdit" method="post" enctype="multipart/form-data">
+            <div class="col-md-8 offset-md-4 mb-4">
+                <h2>Kullanıcı Bilgi Güncelleme</h2>
+            </div>
+            <div class="row mb-3">
+                <label for="Phone" class="col-md-4 col-form-label" asp-for="Phone"></label>
+                <div class="col-md-8">
+                    <input asp-for="Phone" class="form-control">
+                    <span class="text-danger" asp-validation-for="Phone"></span>
+                </div>
+                </div>
+                    <div class="row mb-3">
+                        <label for="Picture" class="col-md-4 col-form-label" asp-for="Picture"></label>
+                        <div class="col-md-8">
+                            <input type="file" class="form-control" asp-for="Picture">
+                            <span class="text-danger" asp-validation-for="Picture"></span>
+                        </div>
+                    </div>
+            <div class="row mb-3">
+                <div class="col-md-8 offset-md-4">
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

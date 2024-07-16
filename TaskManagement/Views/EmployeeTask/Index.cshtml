@@ -1,0 +1,79 @@
+﻿@using System.Security.Claims;
+@using TaskManagement.Areas.Admin.Models
+<!-- Index.cshtml -->
+@model TaskManagement.Models.CorporateTaskModel
+
+<h1>Employee Tasks</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Görev ID</th>
+            <th>Görev Adı</th>
+            <th>Başlangıç Tarihi</th>
+            <th>Bitiş Tarihi</th>
+            <th>Detaylar</th>
+            <th>Onay Durumu</th>
+            <th>Başlama Durumu</th>
+            <th>İlerleme (%)</th>
+            <!-- Add more columns as needed -->
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var task in Model.Tasks)
+        {
+            <tr>
+                <td>@task.Id</td>
+                <td><a asp-action="Details" asp-controller="CorporateTask" asp-area="Admin" asp-route-id="@task.Id">@task.Name </a> </td>
+                <td>@task.StartDate.ToShortDateString()</td>
+                <td>@task.EndDate.ToShortDateString()</td>
+                <td>@task.Detail</td>
+                <td class="col-1 @(task.IsApproved ? "text-success" : "text-danger")">
+                    @(task.IsApproved ? "Evet" : "Hayır")
+                </td>
+                <td>
+                @if (!task.IsInProgress)
+                {
+                        <button type="button" class="btn btn-sm btn-success btn-approve" data-task-id="@task.Id">İşe Başla</button>
+                }
+                else
+                {
+                    <span class="text-success">Başlandı</span>
+                }
+                </td>
+                <td>@task.CompletionProgress %</td>
+            </tr>
+        }
+    </tbody>
+</table>
+    @section Scripts{
+    <script>
+
+            $('.btn-approve').click(function () {
+                var taskId = $(this).data('task-id');
+                var button = $(this); // Store reference to the clicked button
+                var row = button.closest('tr'); // Find the closest row to the clicked button
+                var isApprovedCell = row.find('.isapproved'); // Find the isApproved cell in the same row
+
+                $.ajax({
+                    url: 'BeginTask/' + taskId,
+                    method: 'POST',
+                    success: function (response) {
+                        if (response.success) {
+                            // Change the button text to "Onaylandı" and disable the button
+                            button.replaceWith('<span class="text-success">Başlandı</span>');
+                            // Change the isApproved cell text and class to "Evet" and "text-success"
+                            isApprovedCell.text('Evet').removeClass('text-danger').addClass('text-success');
+                        } else {
+                            console.error('Approval failed:', response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error approving task:', error);
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+    </script>
+    }
+        

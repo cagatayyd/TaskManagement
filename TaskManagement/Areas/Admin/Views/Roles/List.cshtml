@@ -1,0 +1,115 @@
+﻿<link href="https://cdn.datatables.net/2.0.8/css/dataTables.bootstrap5.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+@{
+    ViewData["Title"] = "List";
+}
+@using TaskManagement.Areas.Admin.Models
+@model List<RoleModel>
+
+<div class="row mb-3">
+    <div class="col-md-10 d-flex align-items-center">
+        <h1>Roller</h1>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn btn-md btn-primary" data-bs-toggle="modal" data-bs-target="#addRoleModal">
+            Rol Ekle
+        </button>
+    </div>
+</div>
+
+<div class="modal fade" id="addRoleModal" tabindex="-1" aria-labelledby="addRoleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addRoleModalLabel">Yeni Rol Ekle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="addRoleForm">
+                    <div class="mb-3">
+                        <label for="roleName" class="form-label">Rol Adı</label>
+                        <input type="text" class="form-control" id="roleName" name="Name" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Kaydet</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-info" role="alert">
+                @TempData["SuccessMessage"]
+            </div>
+        }
+        <table id="dataTable" class="table mt-4">
+            <thead>
+                <tr>
+                    <th class="col-1">Id</th>
+                    <th class="col-6">Adı</th>
+                    <th>İşlemler</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.Id</td>
+                        <td>@item.Name</td>
+                        <td>
+                            <a class="btn btn-danger ms-3" asp-area="Admin" asp-action="RoleDelete" asp-controller="roles" asp-route-id="@item.Id">Rol Sil</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/2.0.8/js/dataTables.bootstrap5.js"></script>
+<script>new DataTable('#dataTable');</script>
+
+<script>
+    $(document).ready(function () {
+        $('#addRoleForm').on('submit', function (event) {
+            event.preventDefault();
+
+            $.ajax({
+                url: '@Url.Action("RoleCreate", "Roles", new { area = "admin" })',
+                type: 'POST',
+                data: $(this).serialize(),
+                success: function (response) {
+                    console.log(response); // Yanıtı kontrol etmek için
+
+                    if (response.success) {
+                        // Modal'ı kapat
+                        $('#addRoleModal').modal('hide');
+                        // Yeni rolü tabloya ekle
+                        var newRow = `<tr>
+                                        <td>${response.role.Id}</td>
+                                        <td>${response.role.Name}</td>
+                                        <td>
+                                            <a class="btn btn-warning" asp-area="Admin" asp-action="RoleUpdate" asp-controller="roles" asp-route-id="${response.role.Id}">Rol Güncelle</a>
+                                            <a class="btn btn-danger ms-3" asp-area="Admin" asp-action="RoleDelete" asp-controller="roles" asp-route-id="${response.role.Id}">Rol Sil</a>
+                                        </td>
+                                      </tr>`;
+                        $('#dataTable tbody').append(newRow);
+                    } else {
+                        alert("Rol eklenemedi: " + response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Bir hata oluştu: " + error);
+                }
+            });
+        });
+    });
+
+
+</script>
